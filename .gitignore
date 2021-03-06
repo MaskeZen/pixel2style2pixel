@@ -1,0 +1,13 @@
+configs/__pycache__/
+datasets/__pycache__
+input_2/
+models/__pycache__/
+models/encoders/__pycache__/
+models/stylegan2/__pycache__/
+models/stylegan2/op/__pycache__/
+utils/__pycache__/
+pretrained_models
+shape_predictor_68_face_landmarks.dat*
+output
+scripts/__pycache__/
+notebooks/images/*
