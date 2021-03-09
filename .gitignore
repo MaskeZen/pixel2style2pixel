@@ -11,3 +11,4 @@ shape_predictor_68_face_landmarks.dat*
 output
 scripts/__pycache__/
 notebooks/images/*
+options/__pycache__

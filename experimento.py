@@ -15,7 +15,7 @@ from models.psp import pSp
 CODE_DIR = os.getcwd()
 experiment_type = 'ffhq_encode' #@param ['ffhq_encode', 'ffhq_frontalize', 'celebs_sketch_to_face', 'celebs_seg_to_face', 'celebs_super_resolution', 'toonify']
 
-MODEL_PATHS = {
+MODEL_PATHS_DOWNLOAD = {
     "ffhq_encode": {"id": "1bMTNWkh5LArlaWSc_wa8VKyq2V42T2z0", "name": "psp_ffhq_encode.pt"},
     "ffhq_frontalize": {"id": "1_S4THAzXb-97DbpXmanjHtXRyKxqjARv", "name": "psp_ffhq_frontalization.pt"},
     "celebs_sketch_to_face": {"id": "1lB7wk7MwtdxL-LL4Z_T76DuCfk00aSXA", "name": "psp_celebs_sketch_to_face.pt"},
@@ -155,7 +155,7 @@ EXPERIMENT_ARGS = EXPERIMENT_DATA_ARGS[experiment_type]
 if os.path.exists(EXPERIMENT_ARGS['model_path']):
     check_file(EXPERIMENT_ARGS['model_path'])
 else:
-    download_pretrained_model(MODEL_PATHS[experiment_type])
+    download_pretrained_model(MODEL_PATHS_DOWNLOAD[experiment_type])
 
 net, opts = load_pretrained_model(EXPERIMENT_ARGS['model_path'])
     

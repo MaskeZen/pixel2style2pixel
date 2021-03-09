@@ -23,3 +23,19 @@ def make_dataset(dir):
                 path = os.path.join(root, fname)
                 images.append(path)
     return images
+
+def download_dlib():
+    dblibFile = "shape_predictor_68_face_landmarks.dat.bz2"
+    if os.path.exists(dblibFile):
+        print("ya se descargo dlib")
+    else:
+        os.system("wget http://dlib.net/files/" + dblibFile)
+        os.system("bzip2 -dk " + dblibFile)
+
+def align_image(image_path):
+  import dlib
+  from scripts.align_all_parallel import align_face
+  predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
+  aligned_image = align_face(filepath=image_path, predictor=predictor)
+  print("Aligned image has shape: {}".format(aligned_image.size))
+  return aligned_image
