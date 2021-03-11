@@ -3,16 +3,16 @@ Code adopted from pix2pixHD:
 https://github.com/NVIDIA/pix2pixHD/blob/master/data/image_folder.py
 """
 import os
+import torch
+import numpy as np
 
 IMG_EXTENSIONS = [
     '.jpg', '.JPG', '.jpeg', '.JPEG',
     '.png', '.PNG', '.ppm', '.PPM', '.bmp', '.BMP', '.tiff'
 ]
 
-
 def is_image_file(filename):
     return any(filename.endswith(extension) for extension in IMG_EXTENSIONS)
-
 
 def make_dataset(dir):
     images = []
@@ -39,3 +39,22 @@ def align_image(image_path):
   aligned_image = align_face(filepath=image_path, predictor=predictor)
   print("Aligned image has shape: {}".format(aligned_image.size))
   return aligned_image
+
+def run_on_batch(inputs, net, latent_mask=None):
+    if latent_mask is None:
+        result_batch = net(inputs.to("cuda").float(), randomize_noise=False)
+    else:
+        result_batch = []
+        for image_idx, input_image in enumerate(inputs):
+            # get latent vector to inject into our input image
+            vec_to_inject = np.random.randn(1, 512).astype('float32')
+            _, latent_to_inject = net(torch.from_numpy(vec_to_inject).to("cuda"),
+                                      input_code=True,
+                                      return_latents=True)
+            # get output image with injected style vector
+            res = net(input_image.unsqueeze(0).to("cuda").float(),
+                      latent_mask=latent_mask,
+                      inject_latent=latent_to_inject)
+            result_batch.append(res)
+        result_batch = torch.cat(result_batch, dim=0)
+    return result_batch
