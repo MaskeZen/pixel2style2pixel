@@ -2,8 +2,17 @@
 input_2/
 pretrained_models
 shape_predictor_68_face_landmarks.dat*
-output
+
+# inputs
 notebooks/images/*
+inputs/
+
+# outputs
+output
+*output.tgz
 
 # log files
 *.log
+
+# IDE & texteditor
+.vscode
