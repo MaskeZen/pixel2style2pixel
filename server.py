@@ -3,6 +3,7 @@ import logging
 
 from flask import Flask
 from flask.globals import request
+from flask.helpers import send_file
 from werkzeug.utils import secure_filename
 from bootstrap import BootstrapPixel2Style
 from configs.pixel2style_config import EXPERIMENT_DATA_ARGS
@@ -55,8 +56,10 @@ def frontalize():
                 print("se creo el directorio output.")
             
             base_path, image_file_name = os.path.split(tmp_file_path)
-            res_image.save("output/flask_"+task_type+"_"+image_file_name+".jpg")
-            return 'frontalizando imagen...' + filename
+            output_file = "output/flask_"+task_type+"_"+image_file_name+".jpg"
+            res_image.save(output_file)
+            res_image.tobytes()
+            return send_file(filename_or_fp=output_file,attachment_filename=image_file_name+"_"+task_type+".jpg",as_attachment=True)
         else:
             return 'no se envio ninguna imagen'
 
