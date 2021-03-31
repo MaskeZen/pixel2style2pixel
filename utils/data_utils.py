@@ -41,20 +41,20 @@ def align_image(image_path):
   return aligned_image
 
 def run_on_batch(inputs, net, latent_mask=None):
-    if latent_mask is None:
-        result_batch = net(inputs.to("cuda").float(), randomize_noise=False)
-    else:
-        result_batch = []
-        for image_idx, input_image in enumerate(inputs):
-            # get latent vector to inject into our input image
-            vec_to_inject = np.random.randn(1, 512).astype('float32')
-            _, latent_to_inject = net(torch.from_numpy(vec_to_inject).to("cuda"),
-                                      input_code=True,
-                                      return_latents=True)
-            # get output image with injected style vector
-            res = net(input_image.unsqueeze(0).to("cuda").float(),
-                      latent_mask=latent_mask,
-                      inject_latent=latent_to_inject)
-            result_batch.append(res)
-        result_batch = torch.cat(result_batch, dim=0)
-    return result_batch
+    # if latent_mask is None:
+    result_batch, result_latents = net(inputs.to("cuda").float(), randomize_noise=False, return_latents=True)
+    # else:
+    #     result_batch = []
+    #     for image_idx, input_image in enumerate(inputs):
+    #         # get latent vector to inject into our input image
+    #         vec_to_inject = np.random.randn(1, 512).astype('float32')
+    #         _, latent_to_inject = net(torch.from_numpy(vec_to_inject).to("cuda"),
+    #                                   input_code=True,
+    #                                   return_latents=True)
+    #         # get output image with injected style vector
+    #         res = net(input_image.unsqueeze(0).to("cuda").float(),
+    #                   latent_mask=latent_mask,
+    #                   inject_latent=latent_to_inject)
+    #         result_batch.append(res)
+    #     result_batch = torch.cat(result_batch, dim=0)
+    return result_batch, result_latents

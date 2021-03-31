@@ -60,7 +60,11 @@ class BootstrapPixel2Style:
 
         with torch.no_grad():
             tic = time.time()
-            result_image = data_utils.run_on_batch(input_image_transform.unsqueeze(0), net, latent_mask)[0]
+            result_image, result_latent = data_utils.run_on_batch(input_image_transform.unsqueeze(0), net, latent_mask)
+            result_image = result_image[0]
+            print("result_latent.shape -> ")
+            print(result_latent[0].shape)
+            
             toc = time.time()
             print('Inference took {:.4f} seconds.'.format(toc - tic))
 
