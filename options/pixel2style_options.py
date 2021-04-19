@@ -8,11 +8,11 @@ class Pixel2StyleOptions:
 		self.initialize()
 
 	def initialize(self):
-         self.parser.add_argument(
+		self.parser.add_argument(
             '-i', '--imagen', type=str, help='Path to the image')
-         self.parser.add_argument(
+		self.parser.add_argument(
             '-a', '--align', action="store_true", help='If is necesary align the images.')
-         self.parser.add_argument('-t', '--task', type=str, default='ffhq_encode',
+		self.parser.add_argument('-t', '--task', type=str, default='ffhq_encode',
                 choices=['ffhq_encode',
                             'ffhq_frontalize',
                             'celebs_sketch_to_face',
@@ -20,6 +20,10 @@ class Pixel2StyleOptions:
                             'celebs_super_resolution',
                             'toonify'],
                 help='Type of task to run')
+		self.parser.add_argument(
+            '-i1', '--imagen1', type=str, help='Path to the image1')
+		self.parser.add_argument(
+			'-i2', '--imagen2', type=str, help='Path to the image2')
 
 	# # arguments for inference script
 	# self.parser.add_argument('--exp_dir', type=str, help='Path to experiment output directory')
