@@ -51,7 +51,7 @@ def frontalize():
             input_image = BootstrapPixel2Style.get_input_image(tmp_file_path, image_align)
             if input_image == None:
                 return 'Error al frontalizar la imagen'
-            res_image = BootstrapPixel2Style.process_image(input_image, net_ffhq_frontalize, EXPERIMENT_DATA_ARGS[task_type])
+            res_image = BootstrapPixel2Style.process_image(input_image, net_ffhq_frontalize, EXPERIMENT_DATA_ARGS[task_type], filename)
 
             if not os.path.exists('output'):
                 os.mkdir('output')
@@ -75,18 +75,19 @@ def encode():
         if imagen != None:
             input_image, filename = load_image(imagen)
             
-            res_image = BootstrapPixel2Style.process_image(input_image, net_ffhq_encode, EXPERIMENT_DATA_ARGS[task_type])
+            f_name, f_ext = os.path.splitext(filename)
+            res_image = BootstrapPixel2Style.process_image(input_image, net_ffhq_encode, EXPERIMENT_DATA_ARGS[task_type], f_name)
 
             if not os.path.exists('output'):
                 os.mkdir('output')
                 print("se creo el directorio output.")
             
-            tmp_file_path = os.path.join(UPLOAD_FOLDER, filename)
-            base_path, image_file_name = os.path.split(tmp_file_path)
-            output_file = "output/flask_"+task_type+"_"+image_file_name+".jpg"
+            # tmp_file_path = os.path.join(UPLOAD_FOLDER, filename)
+            # # base_path, image_file_name = os.path.split(tmp_file_path)
+            output_file = "output/flask_"+task_type+"_"+f_name+".jpg"
             res_image.save(output_file)
             res_image.tobytes()
-            return send_file(filename_or_fp=output_file,attachment_filename=image_file_name+"_"+task_type+".jpg",as_attachment=True)
+            return send_file(filename_or_fp=output_file,attachment_filename=f_name+"_"+task_type+".jpg",as_attachment=True)
         else:
             return 'no se envio ninguna imagen'
 

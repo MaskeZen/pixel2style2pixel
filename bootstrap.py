@@ -63,7 +63,7 @@ class BootstrapPixel2Style:
         parts.extend(traceback.format_exception(*sys.exc_info())[1:])
         return "".join(parts)
 
-    def process_image(input_image, net, experiment_args):
+    def process_image(input_image, net, experiment_args, latent_file_name='latent_file'):
         img_transforms = experiment_args['transform']
         input_image_transform = img_transforms(input_image)
         latent_mask = None
@@ -77,9 +77,10 @@ class BootstrapPixel2Style:
                 torch_one = result_latent[0]
                 numpy_array = torch_one.cpu().data.numpy()
                 numpy_array = np.array([numpy_array])
-                with open("output/latent_test_pickle.pkl", 'wb') as out_file:
+                latent_file_output = "output/"+latent_file_name+".pkl"
+                with open(latent_file_output, 'wb') as out_file:
                     pickle.dump(numpy_array, out_file)
-                print(' ------- save pickle OK! ------- ')
+                print(' ------- save pickle '+latent_file_output+' OK! ------- ')
             except:
                 print('error on transform torch2npy')
                 stacktrace = BootstrapPixel2Style.format_stacktrace()
